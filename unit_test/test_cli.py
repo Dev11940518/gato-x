@@ -154,6 +154,8 @@ async def test_cli_old_token(mock_enumerator, capfd):
         socks_proxy=None,
         http_proxy=None,
         skip_log=False,
+        skip_secrets=False,
+        skip_admin_runners=False,
         github_url=None,
         ignore_workflow_run=False,
     )
