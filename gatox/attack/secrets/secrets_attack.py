@@ -253,8 +253,10 @@ EOF
                 expected = set(artifact_to_env.keys())
                 all_artifacts = {}
                 for _ in range(30):
-                    all_artifacts = await self.api.action.retrieve_all_workflow_artifacts(
-                        target_repo, workflow_id
+                    all_artifacts = (
+                        await self.api.action.retrieve_all_workflow_artifacts(
+                            target_repo, workflow_id
+                        )
                     )
                     if expected.issubset(all_artifacts.keys()):
                         break
@@ -299,7 +301,9 @@ EOF
             if delete_action and (
                 not finegrain_scopes or "actions:write" in finegrain_scopes
             ):
-                res = await self.api.action.delete_workflow_run(target_repo, workflow_id)
+                res = await self.api.action.delete_workflow_run(
+                    target_repo, workflow_id
+                )
                 if not res:
                     Output.error("Failed to delete workflow!")
                 else:
