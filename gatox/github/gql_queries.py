@@ -167,7 +167,7 @@ class GqlQueries:
         files from a list of repositories.
 
         This method splits the list of repositories into chunks of
-        up to 100 repositories each, and constructs a separate
+        up to 30 repositories each, and constructs a separate
         GraphQL query for each chunk. Each query fetches the workflow
         YAML files from the repositories in one chunk.
 
@@ -183,8 +183,8 @@ class GqlQueries:
 
         queries = []
 
-        for i in range(0, len(repos), 50):
-            chunk = repos[i : i + 50]
+        for i in range(0, len(repos), 30):
+            chunk = repos[i : i + 30]
             repo_queries = []
 
             for j, repo in enumerate(chunk):
@@ -221,15 +221,15 @@ class GqlQueries:
         if len(repos) == 0:
             return queries
 
-        for i in range(0, (len(repos) // 100) + 1):
-            top_len = len(repos) if len(repos) < 100 * (i + 1) else 100 * (i + 1)
+        for i in range(0, (len(repos) // 30) + 1):
+            top_len = len(repos) if len(repos) < 30 * (i + 1) else 30 * (i + 1)
             # Use reduce to accumulate node_ids and can_push in a single iteration
             node_ids, can_push = reduce(
                 lambda acc, repo: (
                     acc[0] + [repo.repo_data["node_id"]],
                     acc[1] or repo.can_push(),
                 ),
-                repos[100 * i : top_len],
+                repos[30 * i : top_len],
                 ([], False),
             )
 
